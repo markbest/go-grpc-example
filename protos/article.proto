@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+package article;
+
+service Article {
+    rpc GetArticleInfo (Request) returns (ArticleInfoResponse) {}
+}
+
+message Request {
+    int64 id = 1;
+}
+
+message ArticleInfoResponse {
+    int64 id = 1;
+    string title = 2;
+    string slug = 3;
+    string summary = 4;
+    string body = 5;
+    string image = 6;
+    int64 views = 7;
+    int32 user_id = 8;
+    string created_at = 9;
+    string updated_at = 10;
+}
