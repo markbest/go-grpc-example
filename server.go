@@ -16,14 +16,26 @@ const (
 
 type server struct{}
 
-func (s *server) GetArticleInfo(ctx context.Context, in *pb.Request) (*pb.ArticleInfoResponse, error) {
+func (s *server) GetArticleInfo(ctx context.Context, in *pb.QueryRequest) (*pb.ArticleInfo, error) {
 	var a Article
-	var rs pb.ArticleInfoResponse
+	var rs pb.ArticleInfo
 
 	a = GetArticleInfo(in.Id)
 	json_content, _ := json.Marshal(a)
 	json.Unmarshal(json_content, &rs)
 	return &rs, nil
+}
+
+func (s *server) GetArticleList(ctx context.Context, in *pb.QueryRequest) (*pb.ArticleList, error) {
+	var a []Article
+	var rs []*pb.ArticleInfo
+	var nrs pb.ArticleList
+
+	a = GetArticleList(in.Page, in.Limit)
+	json_content, _ := json.Marshal(a)
+	json.Unmarshal(json_content, &rs)
+	nrs.List = rs
+	return &nrs, nil
 }
 
 func main() {

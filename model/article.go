@@ -23,7 +23,14 @@ func (Article) TableName() string {
 	return "articles"
 }
 
-// e.GET("/article/:id", GetArticleInfo)
+func GetArticleList(page int64, limit int64) []Article {
+	var articles []Article
+
+	db := utils.DB()
+	db.Limit(limit).Offset(limit * (page - 1)).Find(&articles)
+	return articles
+}
+
 func GetArticleInfo(id int64) Article {
 	var article Article
 

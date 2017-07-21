@@ -8,8 +8,9 @@ It is generated from these files:
 	protos/article.proto
 
 It has these top-level messages:
-	Request
-	ArticleInfoResponse
+	QueryRequest
+	ArticleInfo
+	ArticleList
 */
 package article
 
@@ -33,23 +34,39 @@ var _ = math.Inf
 // proto package needs to be updated.
 const _ = proto.ProtoPackageIsVersion2 // please upgrade the proto package
 
-type Request struct {
-	Id int64 `protobuf:"varint,1,opt,name=id" json:"id,omitempty"`
+type QueryRequest struct {
+	Id    int64 `protobuf:"varint,1,opt,name=id" json:"id,omitempty"`
+	Limit int64 `protobuf:"varint,2,opt,name=limit" json:"limit,omitempty"`
+	Page  int64 `protobuf:"varint,3,opt,name=page" json:"page,omitempty"`
 }
 
-func (m *Request) Reset()                    { *m = Request{} }
-func (m *Request) String() string            { return proto.CompactTextString(m) }
-func (*Request) ProtoMessage()               {}
-func (*Request) Descriptor() ([]byte, []int) { return fileDescriptor0, []int{0} }
+func (m *QueryRequest) Reset()                    { *m = QueryRequest{} }
+func (m *QueryRequest) String() string            { return proto.CompactTextString(m) }
+func (*QueryRequest) ProtoMessage()               {}
+func (*QueryRequest) Descriptor() ([]byte, []int) { return fileDescriptor0, []int{0} }
 
-func (m *Request) GetId() int64 {
+func (m *QueryRequest) GetId() int64 {
 	if m != nil {
 		return m.Id
 	}
 	return 0
 }
 
-type ArticleInfoResponse struct {
+func (m *QueryRequest) GetLimit() int64 {
+	if m != nil {
+		return m.Limit
+	}
+	return 0
+}
+
+func (m *QueryRequest) GetPage() int64 {
+	if m != nil {
+		return m.Page
+	}
+	return 0
+}
+
+type ArticleInfo struct {
 	Id        int64  `protobuf:"varint,1,opt,name=id" json:"id,omitempty"`
 	Title     string `protobuf:"bytes,2,opt,name=title" json:"title,omitempty"`
 	Slug      string `protobuf:"bytes,3,opt,name=slug" json:"slug,omitempty"`
@@ -62,84 +79,101 @@ type ArticleInfoResponse struct {
 	UpdatedAt string `protobuf:"bytes,10,opt,name=updated_at,json=updatedAt" json:"updated_at,omitempty"`
 }
 
-func (m *ArticleInfoResponse) Reset()                    { *m = ArticleInfoResponse{} }
-func (m *ArticleInfoResponse) String() string            { return proto.CompactTextString(m) }
-func (*ArticleInfoResponse) ProtoMessage()               {}
-func (*ArticleInfoResponse) Descriptor() ([]byte, []int) { return fileDescriptor0, []int{1} }
+func (m *ArticleInfo) Reset()                    { *m = ArticleInfo{} }
+func (m *ArticleInfo) String() string            { return proto.CompactTextString(m) }
+func (*ArticleInfo) ProtoMessage()               {}
+func (*ArticleInfo) Descriptor() ([]byte, []int) { return fileDescriptor0, []int{1} }
 
-func (m *ArticleInfoResponse) GetId() int64 {
+func (m *ArticleInfo) GetId() int64 {
 	if m != nil {
 		return m.Id
 	}
 	return 0
 }
 
-func (m *ArticleInfoResponse) GetTitle() string {
+func (m *ArticleInfo) GetTitle() string {
 	if m != nil {
 		return m.Title
 	}
 	return ""
 }
 
-func (m *ArticleInfoResponse) GetSlug() string {
+func (m *ArticleInfo) GetSlug() string {
 	if m != nil {
 		return m.Slug
 	}
 	return ""
 }
 
-func (m *ArticleInfoResponse) GetSummary() string {
+func (m *ArticleInfo) GetSummary() string {
 	if m != nil {
 		return m.Summary
 	}
 	return ""
 }
 
-func (m *ArticleInfoResponse) GetBody() string {
+func (m *ArticleInfo) GetBody() string {
 	if m != nil {
 		return m.Body
 	}
 	return ""
 }
 
-func (m *ArticleInfoResponse) GetImage() string {
+func (m *ArticleInfo) GetImage() string {
 	if m != nil {
 		return m.Image
 	}
 	return ""
 }
 
-func (m *ArticleInfoResponse) GetViews() int64 {
+func (m *ArticleInfo) GetViews() int64 {
 	if m != nil {
 		return m.Views
 	}
 	return 0
 }
 
-func (m *ArticleInfoResponse) GetUserId() int32 {
+func (m *ArticleInfo) GetUserId() int32 {
 	if m != nil {
 		return m.UserId
 	}
 	return 0
 }
 
-func (m *ArticleInfoResponse) GetCreatedAt() string {
+func (m *ArticleInfo) GetCreatedAt() string {
 	if m != nil {
 		return m.CreatedAt
 	}
 	return ""
 }
 
-func (m *ArticleInfoResponse) GetUpdatedAt() string {
+func (m *ArticleInfo) GetUpdatedAt() string {
 	if m != nil {
 		return m.UpdatedAt
 	}
 	return ""
 }
 
+type ArticleList struct {
+	List []*ArticleInfo `protobuf:"bytes,1,rep,name=list" json:"list,omitempty"`
+}
+
+func (m *ArticleList) Reset()                    { *m = ArticleList{} }
+func (m *ArticleList) String() string            { return proto.CompactTextString(m) }
+func (*ArticleList) ProtoMessage()               {}
+func (*ArticleList) Descriptor() ([]byte, []int) { return fileDescriptor0, []int{2} }
+
+func (m *ArticleList) GetList() []*ArticleInfo {
+	if m != nil {
+		return m.List
+	}
+	return nil
+}
+
 func init() {
-	proto.RegisterType((*Request)(nil), "article.Request")
-	proto.RegisterType((*ArticleInfoResponse)(nil), "article.ArticleInfoResponse")
+	proto.RegisterType((*QueryRequest)(nil), "article.queryRequest")
+	proto.RegisterType((*ArticleInfo)(nil), "article.articleInfo")
+	proto.RegisterType((*ArticleList)(nil), "article.articleList")
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -153,7 +187,8 @@ const _ = grpc.SupportPackageIsVersion4
 // Client API for Article service
 
 type ArticleClient interface {
-	GetArticleInfo(ctx context.Context, in *Request, opts ...grpc.CallOption) (*ArticleInfoResponse, error)
+	GetArticleInfo(ctx context.Context, in *QueryRequest, opts ...grpc.CallOption) (*ArticleInfo, error)
+	GetArticleList(ctx context.Context, in *QueryRequest, opts ...grpc.CallOption) (*ArticleList, error)
 }
 
 type articleClient struct {
@@ -164,9 +199,18 @@ func NewArticleClient(cc *grpc.ClientConn) ArticleClient {
 	return &articleClient{cc}
 }
 
-func (c *articleClient) GetArticleInfo(ctx context.Context, in *Request, opts ...grpc.CallOption) (*ArticleInfoResponse, error) {
-	out := new(ArticleInfoResponse)
+func (c *articleClient) GetArticleInfo(ctx context.Context, in *QueryRequest, opts ...grpc.CallOption) (*ArticleInfo, error) {
+	out := new(ArticleInfo)
 	err := grpc.Invoke(ctx, "/article.Article/GetArticleInfo", in, out, c.cc, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *articleClient) GetArticleList(ctx context.Context, in *QueryRequest, opts ...grpc.CallOption) (*ArticleList, error) {
+	out := new(ArticleList)
+	err := grpc.Invoke(ctx, "/article.Article/GetArticleList", in, out, c.cc, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -176,7 +220,8 @@ func (c *articleClient) GetArticleInfo(ctx context.Context, in *Request, opts ..
 // Server API for Article service
 
 type ArticleServer interface {
-	GetArticleInfo(context.Context, *Request) (*ArticleInfoResponse, error)
+	GetArticleInfo(context.Context, *QueryRequest) (*ArticleInfo, error)
+	GetArticleList(context.Context, *QueryRequest) (*ArticleList, error)
 }
 
 func RegisterArticleServer(s *grpc.Server, srv ArticleServer) {
@@ -184,7 +229,7 @@ func RegisterArticleServer(s *grpc.Server, srv ArticleServer) {
 }
 
 func _Article_GetArticleInfo_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(Request)
+	in := new(QueryRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -196,7 +241,25 @@ func _Article_GetArticleInfo_Handler(srv interface{}, ctx context.Context, dec f
 		FullMethod: "/article.Article/GetArticleInfo",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ArticleServer).GetArticleInfo(ctx, req.(*Request))
+		return srv.(ArticleServer).GetArticleInfo(ctx, req.(*QueryRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Article_GetArticleList_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(QueryRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ArticleServer).GetArticleList(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/article.Article/GetArticleList",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ArticleServer).GetArticleList(ctx, req.(*QueryRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -209,6 +272,10 @@ var _Article_serviceDesc = grpc.ServiceDesc{
 			MethodName: "GetArticleInfo",
 			Handler:    _Article_GetArticleInfo_Handler,
 		},
+		{
+			MethodName: "GetArticleList",
+			Handler:    _Article_GetArticleList_Handler,
+		},
 	},
 	Streams:  []grpc.StreamDesc{},
 	Metadata: "protos/article.proto",
@@ -217,22 +284,25 @@ var _Article_serviceDesc = grpc.ServiceDesc{
 func init() { proto.RegisterFile("protos/article.proto", fileDescriptor0) }
 
 var fileDescriptor0 = []byte{
-	// 264 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x09, 0x6e, 0x88, 0x02, 0xff, 0x6c, 0x90, 0xcf, 0x4a, 0xf3, 0x40,
-	0x14, 0xc5, 0xbf, 0xa4, 0x4d, 0xe6, 0xcb, 0x5d, 0x14, 0x19, 0x0b, 0x5e, 0x45, 0x21, 0x64, 0x95,
-	0x55, 0x05, 0x7d, 0x82, 0xb8, 0x91, 0x2e, 0xdc, 0xe4, 0x05, 0x4a, 0xda, 0xb9, 0x96, 0x81, 0xa4,
-	0x89, 0x99, 0x1b, 0xa5, 0x3b, 0x1f, 0x5d, 0xe6, 0x4f, 0x44, 0xc4, 0xdd, 0xfc, 0xce, 0x3d, 0x1c,
-	0x86, 0x1f, 0xac, 0x87, 0xb1, 0xe7, 0xde, 0xdc, 0x37, 0x23, 0xeb, 0x43, 0x4b, 0x1b, 0x87, 0x52,
-	0x04, 0x2c, 0xae, 0x41, 0xd4, 0xf4, 0x36, 0x91, 0x61, 0xb9, 0x82, 0x58, 0x2b, 0x8c, 0xf2, 0xa8,
-	0x5c, 0xd4, 0xb1, 0x56, 0xc5, 0x67, 0x0c, 0x97, 0x95, 0xaf, 0x6d, 0x4f, 0xaf, 0x7d, 0x4d, 0x66,
-	0xe8, 0x4f, 0x86, 0x7e, 0xf7, 0xe4, 0x1a, 0x12, 0xd6, 0xdc, 0x12, 0xc6, 0x79, 0x54, 0x66, 0xb5,
-	0x07, 0x29, 0x61, 0x69, 0xda, 0xe9, 0x88, 0x0b, 0x17, 0xba, 0xb7, 0x44, 0x10, 0x66, 0xea, 0xba,
-	0x66, 0x3c, 0xe3, 0xd2, 0xc5, 0x33, 0xda, 0xf6, 0xbe, 0x57, 0x67, 0x4c, 0x7c, 0xdb, 0xbe, 0xed,
-	0xae, 0xee, 0x9a, 0x23, 0x61, 0xea, 0x77, 0x1d, 0xd8, 0xf4, 0x5d, 0xd3, 0x87, 0x41, 0xe1, 0x3e,
-	0xe0, 0x41, 0x5e, 0x81, 0x98, 0x0c, 0x8d, 0x3b, 0xad, 0xf0, 0x7f, 0x1e, 0x95, 0x49, 0x9d, 0x5a,
-	0xdc, 0x2a, 0x79, 0x07, 0x70, 0x18, 0xa9, 0x61, 0x52, 0xbb, 0x86, 0x31, 0x73, 0x4b, 0x59, 0x48,
-	0x2a, 0xb6, 0xe7, 0x69, 0x50, 0xf3, 0x19, 0xfc, 0x39, 0x24, 0x15, 0x3f, 0xbc, 0x80, 0x08, 0x06,
-	0xe4, 0x13, 0xac, 0x9e, 0x89, 0x7f, 0xf8, 0x90, 0x17, 0x9b, 0xd9, 0x69, 0x30, 0x78, 0x73, 0xfb,
-	0x9d, 0xfc, 0xe1, 0xad, 0xf8, 0xb7, 0x4f, 0x9d, 0xfc, 0xc7, 0xaf, 0x00, 0x00, 0x00, 0xff, 0xff,
-	0x5b, 0x4d, 0xe0, 0x27, 0x94, 0x01, 0x00, 0x00,
+	// 312 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x09, 0x6e, 0x88, 0x02, 0xff, 0x8c, 0x92, 0xcf, 0x4a, 0xc3, 0x40,
+	0x10, 0x87, 0xbb, 0xfd, 0x17, 0x33, 0x95, 0x1e, 0x96, 0x8a, 0x8b, 0x20, 0x94, 0x9c, 0x72, 0xaa,
+	0x50, 0x0f, 0x1e, 0x25, 0x27, 0x2d, 0x78, 0xda, 0x17, 0x28, 0x69, 0x77, 0x2d, 0x0b, 0x89, 0x69,
+	0x77, 0x67, 0x95, 0x3e, 0x83, 0x2f, 0xec, 0x51, 0x76, 0x36, 0x2d, 0x11, 0x7a, 0xf0, 0x36, 0xdf,
+	0x6f, 0x26, 0x1f, 0x93, 0x49, 0x60, 0xb6, 0xb7, 0x0d, 0x36, 0xee, 0xa1, 0xb4, 0x68, 0xb6, 0x95,
+	0x5e, 0x10, 0xf2, 0xa4, 0xc5, 0xec, 0x15, 0xae, 0x0f, 0x5e, 0xdb, 0xa3, 0xd4, 0x07, 0xaf, 0x1d,
+	0xf2, 0x29, 0xf4, 0x8d, 0x12, 0x6c, 0xce, 0xf2, 0x81, 0xec, 0x1b, 0xc5, 0x67, 0x30, 0xaa, 0x4c,
+	0x6d, 0x50, 0xf4, 0x29, 0x8a, 0xc0, 0x39, 0x0c, 0xf7, 0xe5, 0x4e, 0x8b, 0x01, 0x85, 0x54, 0x67,
+	0x3f, 0x0c, 0x26, 0xad, 0x75, 0xf5, 0xf1, 0xde, 0x5c, 0x32, 0xa1, 0xc1, 0x4a, 0x93, 0x29, 0x95,
+	0x11, 0x82, 0xc9, 0x55, 0x7e, 0x47, 0xa6, 0x54, 0x52, 0xcd, 0x05, 0x24, 0xce, 0xd7, 0x75, 0x69,
+	0x8f, 0x62, 0x48, 0xf1, 0x09, 0xc3, 0xf4, 0xa6, 0x51, 0x47, 0x31, 0x8a, 0xd3, 0xa1, 0x0e, 0x5e,
+	0x53, 0x87, 0x65, 0xc6, 0xd1, 0x4b, 0x10, 0xd2, 0x4f, 0xa3, 0xbf, 0x9c, 0x48, 0xe2, 0xde, 0x04,
+	0xfc, 0x16, 0x12, 0xef, 0xb4, 0x5d, 0x1b, 0x25, 0xae, 0xe6, 0x2c, 0x1f, 0xc9, 0x71, 0xc0, 0x95,
+	0xe2, 0xf7, 0x00, 0x5b, 0xab, 0x4b, 0xd4, 0x6a, 0x5d, 0xa2, 0x48, 0xc9, 0x94, 0xb6, 0x49, 0x81,
+	0xa1, 0xed, 0xf7, 0xea, 0xd4, 0x86, 0xd8, 0x6e, 0x93, 0x02, 0xb3, 0xa7, 0xf3, 0x9b, 0xbf, 0x19,
+	0x87, 0x3c, 0x87, 0x61, 0x65, 0x1c, 0x0a, 0x36, 0x1f, 0xe4, 0x93, 0xe5, 0x6c, 0x71, 0x3a, 0x7d,
+	0xe7, 0x3a, 0x92, 0x26, 0x96, 0xdf, 0x0c, 0x92, 0x22, 0xa6, 0xfc, 0x19, 0xa6, 0x2f, 0x1a, 0x8b,
+	0xce, 0x05, 0x6f, 0xce, 0x4f, 0x76, 0x3f, 0xd1, 0xdd, 0x45, 0x61, 0xd6, 0xfb, 0x2b, 0xa0, 0x45,
+	0xfe, 0x2b, 0x08, 0xc3, 0x59, 0x6f, 0x33, 0xa6, 0x7f, 0xe3, 0xf1, 0x37, 0x00, 0x00, 0xff, 0xff,
+	0xb6, 0xe6, 0x7c, 0x22, 0x33, 0x02, 0x00, 0x00,
 }

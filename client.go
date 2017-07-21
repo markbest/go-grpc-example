@@ -19,9 +19,9 @@ func main() {
 	}
 	defer conn.Close()
 	c := pb.NewArticleClient(conn)
-	r, err := c.GetArticleInfo(context.Background(), &pb.Request{Id: 9})
+	r, err := c.GetArticleList(context.Background(), &pb.QueryRequest{Page: 1, Limit:20})
 	if err != nil {
 		log.Fatal("could not greet: %v", err)
 	}
-	log.Print(r.Title)
+	log.Print(len(r.List))
 }
