@@ -1,13 +1,13 @@
 syntax = "proto3";
 
-package article;
+package protos;
 
 service Article {
-    rpc GetArticleInfo (queryRequest) returns (articleInfo) {}
-    rpc GetArticleList (queryRequest) returns (articleList) {}
+    rpc GetArticleInfo (aQueryRequest) returns (articleInfo) {}
+    rpc GetArticleList (aQueryRequest) returns (articleList) {}
 }
 
-message queryRequest {
+message aQueryRequest {
     int64 id = 1;
     int64 limit = 2;
     int64 page = 3;
@@ -21,7 +21,7 @@ message articleInfo {
     string body = 5;
     string image = 6;
     int64 views = 7;
-    int32 user_id = 8;
+    int64 user_id = 8;
     string created_at = 9;
     string updated_at = 10;
 }

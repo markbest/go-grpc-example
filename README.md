@@ -3,7 +3,7 @@ golang下使用grpc的一个简单例子
 
 ## 编译proto文件方法
 - protobuf的相关配置网上很多，这里不再讲述
-- protoc --go_out=plugins=grpc:"server" "protos/article.proto"
+- protoc --go_out=plugins=grpc:"server" "protos/*.proto"
 
 ## 使用方法
 - 拷贝conf/conf.toml.exmpale为conf/conf.toml，并配置数据库信息

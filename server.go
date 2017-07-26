@@ -14,25 +14,49 @@ const (
 	port = ":50051"
 )
 
-type server struct{}
+type articleServer struct{}
 
-func (s *server) GetArticleInfo(ctx context.Context, in *pb.QueryRequest) (*pb.ArticleInfo, error) {
-	var a Article
+func (a *articleServer) GetArticleInfo(ctx context.Context, in *pb.AQueryRequest) (*pb.ArticleInfo, error) {
+	var article Article
 	var rs pb.ArticleInfo
 
-	a = GetArticleInfo(in.Id)
-	json_content, _ := json.Marshal(a)
+	article = GetArticleInfo(in.Id)
+	json_content, _ := json.Marshal(article)
 	json.Unmarshal(json_content, &rs)
 	return &rs, nil
 }
 
-func (s *server) GetArticleList(ctx context.Context, in *pb.QueryRequest) (*pb.ArticleList, error) {
-	var a []Article
+func (a *articleServer) GetArticleList(ctx context.Context, in *pb.AQueryRequest) (*pb.ArticleList, error) {
+	var articles []Article
 	var rs []*pb.ArticleInfo
 	var nrs pb.ArticleList
 
-	a = GetArticleList(in.Page, in.Limit)
-	json_content, _ := json.Marshal(a)
+	articles = GetArticleList(in.Page, in.Limit)
+	json_content, _ := json.Marshal(articles)
+	json.Unmarshal(json_content, &rs)
+	nrs.List = rs
+	return &nrs, nil
+}
+
+type categoryServer struct{}
+
+func (c *categoryServer) GetCategoryInfo(ctx context.Context, in *pb.CQueryRequest) (*pb.CategoryInfo, error) {
+	var category Category
+	var rs pb.CategoryInfo
+
+	category = GetCategoryInfo(in.Id)
+	json_content, _ := json.Marshal(category)
+	json.Unmarshal(json_content, &rs)
+	return &rs, nil
+}
+
+func (c *categoryServer) GetCategoryList(ctx context.Context, in *pb.CQueryRequest) (*pb.CategoryList, error) {
+	var categories []Category
+	var rs []*pb.CategoryInfo
+	var nrs pb.CategoryList
+
+	categories = GetCategoryList(in.Page, in.Limit)
+	json_content, _ := json.Marshal(categories)
 	json.Unmarshal(json_content, &rs)
 	nrs.List = rs
 	return &nrs, nil
@@ -41,9 +65,10 @@ func (s *server) GetArticleList(ctx context.Context, in *pb.QueryRequest) (*pb.A
 func main() {
 	lis, err := net.Listen("tcp", port)
 	if err != nil {
-		log.Fatal("failed to listen: %v", err)
+		log.Fatal(err)
 	}
 	s := grpc.NewServer()
-	pb.RegisterArticleServer(s, &server{})
+	pb.RegisterArticleServer(s, &articleServer{})
+	pb.RegisterCategoryServer(s, &categoryServer{})
 	s.Serve(lis)
 }
