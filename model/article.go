@@ -19,6 +19,13 @@ type Article struct {
 	UpdatedAt *time.Time `json:"updatedAt,omitempty"`
 }
 
+func init() {
+	db := utils.DB()
+	if !db.HasTable(&Article{}) {
+		db.CreateTable(&Article{})
+	}
+}
+
 func (Article) TableName() string {
 	return "articles"
 }
