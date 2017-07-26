@@ -1,6 +1,3 @@
-[app]
-port = ":1232"
-
 [database]
 host = "127.0.0.1"
 database = "database"
