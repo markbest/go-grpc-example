@@ -36,3 +36,29 @@ func Test_GetCategoryList(t *testing.T) {
 	}
 	t.Log(len(r.List))
 }
+
+func Benchmark_GetCategoryInfo(b *testing.B) {
+	b.StopTimer()
+
+	conn, _ := grpc.Dial(address, grpc.WithInsecure())
+	defer conn.Close()
+	c := pb.NewCategoryClient(conn)
+
+	b.StartTimer()
+	for i := 0; i < b.N; i++ {
+		c.GetCategoryInfo(context.Background(), &pb.CQueryRequest{Id: 2})
+	}
+}
+
+func Benchmark_GetCategoryList(b *testing.B) {
+	b.StopTimer()
+
+	conn, _ := grpc.Dial(address, grpc.WithInsecure())
+	defer conn.Close()
+	c := pb.NewCategoryClient(conn)
+
+	b.StartTimer()
+	for i := 0; i < b.N; i++ {
+		c.GetCategoryList(context.Background(), &pb.CQueryRequest{Page: 1, Limit: 20})
+	}
+}

@@ -29,3 +29,14 @@ PASS
 ok      grpc/tests      0.785s
 ```
 
+## 性能测试
+```
+go test -test.bench=".*"
+Benchmark_GetArticleInfo-8          2000            748999 ns/op
+Benchmark_GetArticleList-8           300           4326787 ns/op
+Benchmark_GetCategoryInfo-8         3000            565044 ns/op
+Benchmark_GetCategoryList-8         2000            607405 ns/op
+PASS
+ok      grpc/tests      7.191s
+```
+

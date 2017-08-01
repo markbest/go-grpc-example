@@ -40,3 +40,29 @@ func Test_GetArticleList(t *testing.T) {
 	}
 	t.Log(len(r.List))
 }
+
+func Benchmark_GetArticleInfo(b *testing.B) {
+	b.StopTimer()
+
+	conn, _ := grpc.Dial(address, grpc.WithInsecure())
+	defer conn.Close()
+	c := pb.NewArticleClient(conn)
+
+	b.StartTimer()
+	for i := 0; i < b.N; i++ {
+		c.GetArticleInfo(context.Background(), &pb.AQueryRequest{Id: 10})
+	}
+}
+
+func Benchmark_GetArticleList(b *testing.B) {
+	b.StopTimer()
+
+	conn, _ := grpc.Dial(address, grpc.WithInsecure())
+	defer conn.Close()
+	c := pb.NewArticleClient(conn)
+
+	b.StartTimer()
+	for i := 0; i < b.N; i++ {
+		c.GetArticleList(context.Background(), &pb.AQueryRequest{Page: 1, Limit: 20})
+	}
+}
