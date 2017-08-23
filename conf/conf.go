@@ -8,7 +8,7 @@ import (
 
 var (
 	Conf              config
-	defaultConfigFile = "conf/conf.toml"
+	defaultConfigFile = "./conf/conf.toml"
 )
 
 type config struct {
