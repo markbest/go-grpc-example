@@ -1,7 +1,7 @@
 package model
 
 import (
-	"grpc/utils"
+	"github.com/markbest/go-grpc-example/utils"
 	"time"
 )
 

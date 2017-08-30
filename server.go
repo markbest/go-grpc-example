@@ -4,8 +4,8 @@ import (
 	"encoding/json"
 	"golang.org/x/net/context"
 	"google.golang.org/grpc"
-	. "grpc/model"
-	pb "grpc/server/protos"
+	. "github.com/markbest/go-grpc-example/model"
+	pb "github.com/markbest/go-grpc-example/server/protos"
 	"log"
 	"net"
 )

@@ -5,7 +5,7 @@ import (
 
 	"golang.org/x/net/context"
 	"google.golang.org/grpc"
-	pb "grpc/server/protos"
+	pb "github.com/markbest/go-grpc-example/server/protos"
 )
 
 const (

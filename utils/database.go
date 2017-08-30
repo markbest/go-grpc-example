@@ -1,7 +1,7 @@
 package utils
 
 import (
-	. "grpc/conf"
+	. "github.com/markbest/go-grpc-example/conf"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
