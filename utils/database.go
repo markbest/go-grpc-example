@@ -1,19 +1,19 @@
 package utils
 
 import (
-	. "github.com/markbest/go-grpc-example/conf"
+	"log"
+
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
-	"github.com/labstack/gommon/log"
+
+	. "github.com/markbest/go-grpc-example/conf"
 )
 
 var db *gorm.DB
 
 func DB() *gorm.DB {
 	if db == nil {
-		log.Debugf("Model NewDB")
-
 		newDb, err := newDB()
 		if err != nil {
 			panic(err)
@@ -28,7 +28,7 @@ func DB() *gorm.DB {
 
 func newDB() (*gorm.DB, error) {
 	if err := InitConfig(); err != nil {
-		log.Panic(err)
+		log.Fatal(err)
 	}
 
 	sqlConnection := Conf.DB.User + ":" + Conf.DB.Password + "@tcp(" + Conf.DB.Host + ":" + Conf.DB.Port + ")/" + Conf.DB.Database + "?charset=utf8mb4&parseTime=True&loc=Local"

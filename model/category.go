@@ -1,8 +1,9 @@
 package model
 
 import (
-	"github.com/markbest/go-grpc-example/utils"
 	"time"
+
+	"github.com/markbest/go-grpc-example/utils"
 )
 
 type Category struct {
@@ -40,4 +41,3 @@ func GetCategoryInfo(id int64) Category {
 	db.Where("id = ?", id).First(&category)
 	return category
 }
-

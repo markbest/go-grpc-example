@@ -1,9 +1,10 @@
 package conf
 
 import (
-	"io/ioutil"
-	"github.com/BurntSushi/toml"
 	"errors"
+	"io/ioutil"
+
+	"github.com/BurntSushi/toml"
 )
 
 var (
@@ -12,8 +13,12 @@ var (
 )
 
 type config struct {
-	// 数据库配置
-	DB database `toml:"database"`
+	App app      `toml:"app"`
+	DB  database `toml:"database"`
+}
+
+type app struct {
+	Port string `toml:"port"`
 }
 
 type database struct {

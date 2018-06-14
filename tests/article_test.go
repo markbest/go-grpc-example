@@ -1,10 +1,12 @@
 package tests
 
 import (
+	"testing"
+
 	"golang.org/x/net/context"
 	"google.golang.org/grpc"
-	pb "github.com/markbest/go-grpc-example/server/protos"
-	"testing"
+
+	pb "github.com/markbest/go-grpc-example/protos"
 )
 
 const (

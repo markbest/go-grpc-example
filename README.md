@@ -1,9 +1,9 @@
-## go-grpc-example
-golang下使用grpc的一个简单例子
+## grpc
+Golang下使用grpc的简单例子
 
 ## 编译proto
-- protobuf的相关配置网上很多，这里不再讲述
-- protoc --go_out=plugins=grpc:"server" "protos/*.proto"
+- protobuf的相关配置网上很多，可以网上查找如何配置
+- protoc --go_out=plugins=grpc:"." "protos/*.proto"
 
 ## 配置使用
 - 拷贝conf/conf.toml.exmpale为conf/conf.toml，并配置数据库信息
@@ -31,12 +31,13 @@ ok      grpc/tests      0.785s
 
 ## 性能测试
 ```
-go test -test.bench=".*"
-Benchmark_GetArticleInfo-8          2000            748999 ns/op
-Benchmark_GetArticleList-8           300           4326787 ns/op
-Benchmark_GetCategoryInfo-8         3000            565044 ns/op
-Benchmark_GetCategoryList-8         2000            607405 ns/op
+goos: windows
+goarch: amd64
+pkg: grpc/tests
+Benchmark_GetArticleInfo-8          2000           1014170 ns/op
+Benchmark_GetArticleList-8           300           4816491 ns/op
+Benchmark_GetCategoryInfo-8         2000            734985 ns/op
+Benchmark_GetCategoryList-8         2000            738987 ns/op
 PASS
-ok      grpc/tests      7.191s
+ok      grpc/tests      8.441s
 ```
-
