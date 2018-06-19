@@ -2,18 +2,30 @@ syntax = "proto3";
 
 package protos;
 
+import "google/api/annotations.proto";
+
 service Category {
-    rpc GetCategoryInfo (cQueryRequest) returns (categoryInfo) {}
-    rpc GetCategoryList (cQueryRequest) returns (categoryList) {}
+    rpc GetCategoryInfo (CQueryRequest) returns (CategoryInfo) {
+        option (google.api.http) = {
+            post: "/v1/category/info"
+            body: "*"
+        };
+    }
+    rpc GetCategoryList (CQueryRequest) returns (CategoryList) {
+        option (google.api.http) = {
+            post: "/v1/category/list"
+            body: "*"
+        };
+    }
 }
 
-message cQueryRequest {
+message CQueryRequest {
     int64 id = 1;
     int64 limit = 2;
     int64 page = 3;
 }
 
-message categoryInfo {
+message CategoryInfo {
     int64 id = 1;
     string title = 2;
     int64 parent_id = 3;
@@ -22,6 +34,6 @@ message categoryInfo {
     string updated_at = 6;
 }
 
-message categoryList {
-    repeated categoryInfo list = 1;
+message CategoryList {
+    repeated CategoryInfo list = 1;
 }

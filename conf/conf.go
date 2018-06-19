@@ -18,7 +18,8 @@ type config struct {
 }
 
 type app struct {
-	Port string `toml:"port"`
+	GrpcPort string `toml:"grpcport"`
+	HttpPort string `toml:"httpport"`
 }
 
 type database struct {

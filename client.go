@@ -15,7 +15,7 @@ func main() {
 		log.Fatal(err)
 	}
 
-	conn, err := grpc.Dial(Conf.App.Port, grpc.WithInsecure())
+	conn, err := grpc.Dial(Conf.App.GrpcPort, grpc.WithInsecure())
 	if err != nil {
 		log.Fatal(err)
 	}

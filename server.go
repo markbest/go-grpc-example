@@ -16,7 +16,7 @@ func main() {
 		log.Fatal(err)
 	}
 
-	lis, err := net.Listen("tcp", Conf.App.Port)
+	lis, err := net.Listen("tcp", Conf.App.GrpcPort)
 	if err != nil {
 		log.Fatal(err)
 	}

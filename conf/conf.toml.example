@@ -1,5 +1,6 @@
 [app]
-port = ":50051"
+grpcport = ":50051"
+httpport = ":9011"
 
 [database]
 host = "127.0.0.1"
