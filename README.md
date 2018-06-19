@@ -1,16 +1,34 @@
 ## grpc
-Golang下使用grpc的简单例子
+Golang grpc以及grpc-gateway的简单使用
 
 ## 编译proto
-- protobuf的相关配置网上很多，可以网上查找如何配置
-- protoc --go_out=plugins=grpc:"." "protos/*.proto"
+- 安装ProtocolBuffers以及gate-gateway，可以查找网站相关资料
+- 编译google.api
+```
+cd protos
+protoc --go_out=plugins=grpc:"." "google/api/*.proto"
+```
+
+- 编译*.proto
+```
+cd protos
+protoc --go_out=plugins=grpc:"." ./*.proto
+```
+
+- 编译*.proto.gw.go
+```
+cd protos
+protoc --grpc-gateway_out=logtostderr=true:"." "*.proto"
+```
 
 ## 配置使用
 - 拷贝conf/conf.toml.exmpale为conf/conf.toml，并配置数据库信息
 - 执行服务端程序：go run server.go
 - 执行客户端程序：go run client.go  
+- 执行gateway程序: go run gateway.go
 
 ## 单元测试
+
 ```
 go test -v
 === RUN   Test_GetArticleInfo
@@ -30,6 +48,7 @@ ok      grpc/tests      0.785s
 ```
 
 ## 性能测试
+
 ```
 goos: windows
 goarch: amd64
