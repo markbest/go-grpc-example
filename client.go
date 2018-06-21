@@ -23,7 +23,7 @@ func main() {
 
 	// article client
 	articleClient := pb.NewArticleClient(conn)
-	ars, err := articleClient.GetArticleInfo(context.Background(), &pb.AQueryRequest{Id: 10})
+	ars, err := articleClient.GetArticleInfo(context.Background(), &pb.AQueryRequest{ArticleId: 10})
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -33,11 +33,11 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Print(len(ars1.List))
+	log.Print(len(ars1.Data))
 
 	// category client
 	categoryClient := pb.NewCategoryClient(conn)
-	crs, err := categoryClient.GetCategoryInfo(context.Background(), &pb.CQueryRequest{Id: 2})
+	crs, err := categoryClient.GetCategoryInfo(context.Background(), &pb.CQueryRequest{CatId: 2})
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -47,5 +47,5 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Print(len(crs1.List))
+	log.Print(len(crs1.Data))
 }

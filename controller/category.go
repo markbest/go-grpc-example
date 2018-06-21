@@ -16,7 +16,7 @@ func (c *CategoryServer) GetCategoryInfo(ctx context.Context, in *pb.CQueryReque
 	var category Category
 	var rs pb.CategoryInfo
 
-	category = GetCategoryInfo(in.Id)
+	category = GetCategoryInfo(in.CatId)
 	jsonContent, _ := json.Marshal(category)
 	json.Unmarshal(jsonContent, &rs)
 	return &rs, nil
@@ -31,6 +31,6 @@ func (c *CategoryServer) GetCategoryList(ctx context.Context, in *pb.CQueryReque
 	categories = GetCategoryList(in.Page, in.Limit)
 	jsonContent, _ := json.Marshal(categories)
 	json.Unmarshal(jsonContent, &rs)
-	nrs.List = rs
+	nrs.Data = rs
 	return &nrs, nil
 }

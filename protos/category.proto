@@ -6,27 +6,21 @@ import "google/api/annotations.proto";
 
 service Category {
     rpc GetCategoryInfo (CQueryRequest) returns (CategoryInfo) {
-        option (google.api.http) = {
-            post: "/v1/category/info"
-            body: "*"
-        };
+        option (google.api.http).get = "/v1/category/info/{cat_id}";
     }
     rpc GetCategoryList (CQueryRequest) returns (CategoryList) {
-        option (google.api.http) = {
-            post: "/v1/category/list"
-            body: "*"
-        };
+        option (google.api.http).get = "/v1/category/list";
     }
 }
 
 message CQueryRequest {
-    int64 id = 1;
+    int64 cat_id = 1;
     int64 limit = 2;
     int64 page = 3;
 }
 
 message CategoryInfo {
-    int64 id = 1;
+    int64 cat_id = 1;
     string title = 2;
     int64 parent_id = 3;
     int64 sort = 4;
@@ -35,5 +29,5 @@ message CategoryInfo {
 }
 
 message CategoryList {
-    repeated CategoryInfo list = 1;
+    repeated CategoryInfo data = 1;
 }

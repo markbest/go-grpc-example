@@ -16,7 +16,7 @@ func (a *ArticleServer) GetArticleInfo(ctx context.Context, in *pb.AQueryRequest
 	var article Article
 	var rs pb.ArticleInfo
 
-	article = GetArticleInfo(in.Id)
+	article = GetArticleInfo(in.ArticleId)
 	jsonContent, _ := json.Marshal(article)
 	json.Unmarshal(jsonContent, &rs)
 	return &rs, nil
@@ -31,6 +31,6 @@ func (a *ArticleServer) GetArticleList(ctx context.Context, in *pb.AQueryRequest
 	articles = GetArticleList(in.Page, in.Limit)
 	jsonContent, _ := json.Marshal(articles)
 	json.Unmarshal(jsonContent, &rs)
-	nrs.List = rs
+	nrs.Data = rs
 	return &nrs, nil
 }

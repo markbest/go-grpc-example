@@ -28,11 +28,33 @@ var _ status.Status
 var _ = runtime.String
 var _ = utilities.NewDoubleArray
 
+var (
+	filter_Article_GetArticleInfo_0 = &utilities.DoubleArray{Encoding: map[string]int{"article_id": 0}, Base: []int{1, 1, 0}, Check: []int{0, 1, 2}}
+)
+
 func request_Article_GetArticleInfo_0(ctx context.Context, marshaler runtime.Marshaler, client ArticleClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq AQueryRequest
 	var metadata runtime.ServerMetadata
 
-	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && err != io.EOF {
+	var (
+		val string
+		ok  bool
+		err error
+		_   = err
+	)
+
+	val, ok = pathParams["article_id"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "article_id")
+	}
+
+	protoReq.ArticleId, err = runtime.Int64(val)
+
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "article_id", err)
+	}
+
+	if err := runtime.PopulateQueryParameters(&protoReq, req.URL.Query(), filter_Article_GetArticleInfo_0); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 
@@ -41,11 +63,15 @@ func request_Article_GetArticleInfo_0(ctx context.Context, marshaler runtime.Mar
 
 }
 
+var (
+	filter_Article_GetArticleList_0 = &utilities.DoubleArray{Encoding: map[string]int{}, Base: []int(nil), Check: []int(nil)}
+)
+
 func request_Article_GetArticleList_0(ctx context.Context, marshaler runtime.Marshaler, client ArticleClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq AQueryRequest
 	var metadata runtime.ServerMetadata
 
-	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && err != io.EOF {
+	if err := runtime.PopulateQueryParameters(&protoReq, req.URL.Query(), filter_Article_GetArticleList_0); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 
@@ -92,7 +118,7 @@ func RegisterArticleHandler(ctx context.Context, mux *runtime.ServeMux, conn *gr
 // "ArticleClient" to call the correct interceptors.
 func RegisterArticleHandlerClient(ctx context.Context, mux *runtime.ServeMux, client ArticleClient) error {
 
-	mux.Handle("POST", pattern_Article_GetArticleInfo_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("GET", pattern_Article_GetArticleInfo_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		if cn, ok := w.(http.CloseNotifier); ok {
@@ -121,7 +147,7 @@ func RegisterArticleHandlerClient(ctx context.Context, mux *runtime.ServeMux, cl
 
 	})
 
-	mux.Handle("POST", pattern_Article_GetArticleList_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("GET", pattern_Article_GetArticleList_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		if cn, ok := w.(http.CloseNotifier); ok {
@@ -154,7 +180,7 @@ func RegisterArticleHandlerClient(ctx context.Context, mux *runtime.ServeMux, cl
 }
 
 var (
-	pattern_Article_GetArticleInfo_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v1", "article", "info"}, ""))
+	pattern_Article_GetArticleInfo_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"v1", "article", "info", "article_id"}, ""))
 
 	pattern_Article_GetArticleList_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v1", "article", "list"}, ""))
 )
