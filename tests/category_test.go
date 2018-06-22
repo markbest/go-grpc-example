@@ -17,7 +17,7 @@ func Test_GetCategoryInfo(t *testing.T) {
 	defer conn.Close()
 
 	c := pb.NewCategoryClient(conn)
-	r, err := c.GetCategoryInfo(context.Background(), &pb.CQueryRequest{Id: 2})
+	r, err := c.GetCategoryInfo(context.Background(), &pb.CQueryRequest{CatId: 2})
 	if err != nil {
 		t.Error(err)
 	}
@@ -36,7 +36,7 @@ func Test_GetCategoryList(t *testing.T) {
 	if err != nil {
 		t.Error(err)
 	}
-	t.Log(len(r.List))
+	t.Log(len(r.Data))
 }
 
 func Benchmark_GetCategoryInfo(b *testing.B) {
@@ -48,7 +48,7 @@ func Benchmark_GetCategoryInfo(b *testing.B) {
 
 	b.StartTimer()
 	for i := 0; i < b.N; i++ {
-		c.GetCategoryInfo(context.Background(), &pb.CQueryRequest{Id: 2})
+		c.GetCategoryInfo(context.Background(), &pb.CQueryRequest{CatId: 2})
 	}
 }
 

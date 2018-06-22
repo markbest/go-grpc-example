@@ -21,7 +21,7 @@ func Test_GetArticleInfo(t *testing.T) {
 	defer conn.Close()
 
 	c := pb.NewArticleClient(conn)
-	r, err := c.GetArticleInfo(context.Background(), &pb.AQueryRequest{Id: 10})
+	r, err := c.GetArticleInfo(context.Background(), &pb.AQueryRequest{ArticleId: 10})
 	if err != nil {
 		t.Error(err)
 	}
@@ -40,7 +40,7 @@ func Test_GetArticleList(t *testing.T) {
 	if err != nil {
 		t.Error(err)
 	}
-	t.Log(len(r.List))
+	t.Log(len(r.Data))
 }
 
 func Benchmark_GetArticleInfo(b *testing.B) {
@@ -52,7 +52,7 @@ func Benchmark_GetArticleInfo(b *testing.B) {
 
 	b.StartTimer()
 	for i := 0; i < b.N; i++ {
-		c.GetArticleInfo(context.Background(), &pb.AQueryRequest{Id: 10})
+		c.GetArticleInfo(context.Background(), &pb.AQueryRequest{ArticleId: 10})
 	}
 }
 
